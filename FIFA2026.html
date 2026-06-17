@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>FIFA World Cup 2026</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { background:#0A0C10; font-family: -apple-system, sans-serif; }
+  #root { min-height:100vh; }
+</style>
+</head>
+<body>
+<div id="root"><div style="color:#fff;padding:40px 20px;text-align:center;">Chargement...</div></div>
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+<script>
+window.addEventListener('error', function(e) {
+  document.getElementById('root').innerHTML =
+    '<div style="color:#fff;padding:40px 20px;font-family:sans-serif;"><h2>Erreur</h2><p style="color:#E84545;margin-top:10px">' + e.message + '</p></div>';
+});
+
+function startApp() {
+  try {
+    const { useState, useEffect } = React;
+const DATA_URL = "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json";
+const FLAGS = {
+  "Mexico": "🇲🇽",
+  "South Africa": "🇿🇦",
+  "South Korea": "🇰🇷",
+  "Czech Republic": "🇨🇿",
+  "Czechia": "🇨🇿",
+  "Canada": "🇨🇦",
+  "Bosnia and Herzegovina": "🇧🇦",
+  "Qatar": "🇶🇦",
+  "Switzerland": "🇨🇭",
+  "Brazil": "🇧🇷",
+  "Morocco": "🇲🇦",
+  "Haiti": "🇭🇹",
+  "Scotland": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+  "USA": "🇺🇸",
+  "United States": "🇺🇸",
+  "Paraguay": "🇵🇾",
+  "Australia": "🇦🇺",
+  "Turkey": "🇹🇷",
+  "Türkiye": "🇹🇷",
+  "Germany": "🇩🇪",
+  "Curaçao": "🇨🇼",
+  "Ivory Coast": "🇨🇮",
+  "Côte d'Ivoire": "🇨🇮",
+  "Ecuador": "🇪🇨",
+  "Netherlands": "🇳🇱",
+  "Japan": "🇯🇵",
+  "Sweden": "🇸🇪",
+  "Tunisia": "🇹🇳",
+  "Belgium": "🇧🇪",
+  "Egypt": "🇪🇬",
+  "Iran": "🇮🇷",
+  "New Zealand": "🇳🇿",
+  "Spain": "🇪🇸",
+  "Cape Verde": "🇨🇻",
+  "Cabo Verde": "🇨🇻",
+  "Saudi Arabia": "🇸🇦",
+  "Uruguay": "🇺🇾",
+  "France": "🇫🇷",
+  "Senegal": "🇸🇳",
+  "Sénégal": "🇸🇳",
+  "Iraq": "🇮🇶",
+  "Norway": "🇳🇴",
+  "Argentina": "🇦🇷",
+  "Algeria": "🇩🇿",
+  "Austria": "🇦🇹",
+  "Jordan": "🇯🇴",
+  "Portugal": "🇵🇹",
+  "DR Congo": "🇨🇩",
+  "Congo DR": "🇨🇩",
+  "Uzbekistan": "🇺🇿",
+  "Colombia": "🇨🇴",
+  "England": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+  "Croatia": "🇭🇷",
+  "Ghana": "🇬🇭",
+  "Panama": "🇵🇦",
+  "UEFA Path A winner": "🏳️",
+  "UEFA Path B winner": "🏳️",
+  "UEFA Path C winner": "🏳️",
+  "UEFA Path D winner": "🏳️",
+  "IC Path 1 winner": "🏳️",
+  "IC Path 2 winner": "🏳️"
+};
+const fl = name => FLAGS[name] || "🏳️";
+const FUN_FACTS = [{
+  icon: "🏆",
+  title: "48 équipes — du jamais vu",
+  body: "2026 est la 1ère Coupe du Monde à 48 équipes. 104 matchs, 40 de plus qu'en 2022. Un format révolutionnaire avec 12 groupes de 4.",
+  tag: "Record historique"
+}, {
+  icon: "🌎",
+  title: "3 pays hôtes",
+  body: "États-Unis, Canada et Mexique co-organisent pour la 1ère fois. Le Mexique devient la 1ère nation à accueillir 3 Coupes du Monde (1970, 1986, 2026).",
+  tag: "Inédit"
+}, {
+  icon: "⭐",
+  title: "Mbappé et la 3ème étoile",
+  body: "À 27 ans, Kylian Mbappé dispute sa 3ème Coupe du Monde. Il rêve d'offrir à la France son 3ème titre après 1998 et 2018.",
+  tag: "🇫🇷 Les Bleus"
+}, {
+  icon: "🇦🇷",
+  title: "Messi, sa dernière danse ?",
+  body: "L'Albiceleste arrive en grande favorite. À 38 ans, Lionel Messi joue probablement sa dernière Coupe du Monde en quête d'un 2ème sacre.",
+  tag: "Tenant du titre"
+}, {
+  icon: "📏",
+  title: "L'Azteca, stade légendaire",
+  body: "Le stade Azteca de Mexico est le seul au monde à avoir accueilli 2 finales (1970 & 1986).",
+  tag: "Patrimoine FIFA"
+}, {
+  icon: "🤖",
+  title: "VAR semi-automatisée",
+  body: "29 caméras par stade avec tracking 3D en temps réel. Les décisions de hors-jeu sont rendues en quelques secondes.",
+  tag: "Innovation"
+}, {
+  icon: "💰",
+  title: "1 milliard de prize money",
+  body: "Record absolu : 1 milliard de dollars de prize money, soit le double de 2022 au Qatar. Le champion empoche 100 millions.",
+  tag: "Business"
+}, {
+  icon: "🥅",
+  title: "CR7 toujours là",
+  body: "Cristiano Ronaldo (39 ans) dispute peut-être sa 6ème et dernière Coupe du Monde.",
+  tag: "CR7 Legend"
+}];
+const C = {
+  gold: "#C9A84C",
+  green: "#00C47D",
+  red: "#E84545",
+  surface: "#1E2235",
+  surface2: "#252A3A",
+  dark: "#0A0C10",
+  text: "#F0F2F8",
+  muted: "#8892A4"
+};
+function normalizeMatch(m, idx) {
+  const hasScore = !!m.score && Array.isArray(m.score.ft);
+  return {
+    id: idx,
+    date: m.date,
+    time: m.time || "",
+    group: (m.group || "").replace("Group ", ""),
+    t1: m.team1,
+    t2: m.team2,
+    f1: fl(m.team1),
+    f2: fl(m.team2),
+    s1: hasScore ? m.score.ft[0] : null,
+    s2: hasScore ? m.score.ft[1] : null,
+    status: hasScore ? "FINISHED" : "UPCOMING",
+    venue: m.ground || ""
+  };
+}
+function computeStandings(matches) {
+  const groups = {};
+  matches.forEach(m => {
+    if (!m.group) return;
+    if (!groups[m.group]) groups[m.group] = {};
+    [m.t1, m.t2].forEach(team => {
+      if (team && !groups[m.group][team]) {
+        groups[m.group][team] = {
+          name: team,
+          flag: fl(team),
+          j: 0,
+          v: 0,
+          n: 0,
+          d: 0,
+          gf: 0,
+          ga: 0,
+          pts: 0
+        };
+      }
+    });
+  });
+  matches.forEach(m => {
+    if (m.status !== "FINISHED" || !m.group) return;
+    const g = groups[m.group];
+    if (!g || !g[m.t1] || !g[m.t2]) return;
+    const t1 = g[m.t1],
+      t2 = g[m.t2];
+    t1.j++;
+    t2.j++;
+    t1.gf += m.s1;
+    t1.ga += m.s2;
+    t2.gf += m.s2;
+    t2.ga += m.s1;
+    if (m.s1 > m.s2) {
+      t1.v++;
+      t1.pts += 3;
+      t2.d++;
+    } else if (m.s1 < m.s2) {
+      t2.v++;
+      t2.pts += 3;
+      t1.d++;
+    } else {
+      t1.n++;
+      t2.n++;
+      t1.pts++;
+      t2.pts++;
+    }
+  });
+  const result = {};
+  Object.entries(groups).forEach(([letter, teams]) => {
+    const arr = Object.values(teams).sort((a, b) => b.pts - a.pts || b.gf - b.ga - (a.gf - a.ga) || b.gf - a.gf);
+    arr.forEach((t, i) => t.pos = i + 1);
+    result[letter] = arr;
+  });
+  return result;
+}
+function Chip({
+  label,
+  active,
+  onClick
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    onClick: onClick,
+    style: {
+      flexShrink: 0,
+      padding: "6px 13px",
+      background: active ? "rgba(201,168,76,0.15)" : C.surface,
+      border: active ? `1px solid ${C.gold}` : "1px solid rgba(255,255,255,0.1)",
+      borderRadius: 20,
+      fontSize: 12,
+      fontWeight: 500,
+      color: active ? C.gold : C.muted,
+      cursor: "pointer",
+      whiteSpace: "nowrap"
+    }
+  }, label);
+}
+function MatchCard({
+  m
+}) {
+  const done = m.status === "FINISHED";
+  let dateLabel = m.date;
+  try {
+    dateLabel = new Date(m.date).toLocaleDateString("fr-FR", {
+      weekday: "short",
+      day: "numeric",
+      month: "short"
+    });
+  } catch (e) {}
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: C.surface,
+      borderRadius: 14,
+      border: "1px solid rgba(255,255,255,0.07)",
+      marginBottom: 10,
+      overflow: "hidden"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      padding: "7px 13px",
+      background: C.surface2,
+      fontSize: 10,
+      fontWeight: 600,
+      letterSpacing: 1,
+      textTransform: "uppercase",
+      color: C.muted
+    }
+  }, /*#__PURE__*/React.createElement("span", null, "Gr.", m.group, " · ", m.venue, " · ", dateLabel), done ? /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: C.green
+    }
+  }, "✅ Terminé") : /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: C.gold
+    }
+  }, "🕐 ", m.time)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      padding: "13px 14px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: 5,
+      width: "38%"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 30
+    }
+  }, m.f1), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      fontWeight: 600,
+      textAlign: "center"
+    }
+  }, m.t1)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center"
+    }
+  }, done ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "Impact,sans-serif",
+      fontSize: 38,
+      letterSpacing: 3
+    }
+  }, m.s1, " – ", m.s2) : /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      fontWeight: 700,
+      color: C.muted
+    }
+  }, "VS")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: 5,
+      width: "38%"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 30
+    }
+  }, m.f2), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      fontWeight: 600,
+      textAlign: "center"
+    }
+  }, m.t2))));
+}
+function GroupesTab({
+  standings
+}) {
+  const letters = Object.keys(standings).sort();
+  if (!letters.length) return /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      padding: 40,
+      color: C.muted
+    }
+  }, "Chargement des groupes...");
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "Impact,sans-serif",
+      fontSize: 26,
+      letterSpacing: 2,
+      marginBottom: 4
+    }
+  }, "Les 12 Groupes"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: C.muted,
+      marginBottom: 16
+    }
+  }, "Classements calculés depuis les résultats officiels"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 10
+    }
+  }, letters.map(letter => /*#__PURE__*/React.createElement("div", {
+    key: letter,
+    style: {
+      background: C.surface,
+      borderRadius: 14,
+      border: "1px solid rgba(255,255,255,0.07)",
+      overflow: "hidden"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "9px 12px",
+      background: `linear-gradient(135deg,${C.surface2},#1C2030)`,
+      fontFamily: "Impact,sans-serif",
+      fontSize: 22,
+      color: C.gold,
+      borderBottom: "1px solid rgba(201,168,76,0.2)"
+    }
+  }, "Groupe ", letter), standings[letter].map((t, i) => /*#__PURE__*/React.createElement("div", {
+    key: t.name,
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 7,
+      padding: "7px 11px",
+      fontSize: 11,
+      fontWeight: 600,
+      borderBottom: "1px solid rgba(255,255,255,0.04)",
+      borderLeft: i < 2 ? `3px solid ${C.green}` : i === 2 ? `3px solid ${C.gold}` : "3px solid transparent"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 16
+    }
+  }, t.flag), /*#__PURE__*/React.createElement("span", {
+    style: {
+      flex: 1
+    }
+  }, t.name), /*#__PURE__*/React.createElement("span", {
+    style: {
+      background: C.surface2,
+      borderRadius: 6,
+      padding: "2px 6px",
+      fontSize: 11,
+      fontWeight: 700,
+      color: t.pts > 0 ? C.gold : C.muted
+    }
+  }, t.pts)))))));
+}
+function MatchesTab({
+  matches
+}) {
+  const [filter, setFilter] = useState("all");
+  const FILTERS = [["all", "Tous"], ["france", "🇫🇷 France"], ["algerie", "🇩🇿 Algérie"], ["done", "✅ Terminés"], ["upcoming", "🕐 À venir"]];
+  let list = matches;
+  if (filter === "france") list = matches.filter(m => m.t1 === "France" || m.t2 === "France");else if (filter === "algerie") list = matches.filter(m => m.t1 === "Algeria" || m.t2 === "Algeria");else if (filter === "done") list = matches.filter(m => m.status === "FINISHED");else if (filter === "upcoming") list = matches.filter(m => m.status === "UPCOMING");
+  const byDate = {};
+  list.forEach(m => {
+    if (!byDate[m.date]) byDate[m.date] = [];
+    byDate[m.date].push(m);
+  });
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "Impact,sans-serif",
+      fontSize: 26,
+      letterSpacing: 2,
+      marginBottom: 4
+    }
+  }, "Calendrier & Résultats"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8,
+      overflowX: "auto",
+      paddingBottom: 4,
+      marginBottom: 14
+    }
+  }, FILTERS.map(([k, l]) => /*#__PURE__*/React.createElement(Chip, {
+    key: k,
+    label: l,
+    active: filter === k,
+    onClick: () => setFilter(k)
+  }))), !list.length && /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      padding: 40,
+      color: C.muted
+    }
+  }, "Aucun match"), Object.entries(byDate).sort().map(([date, ms]) => {
+    let label = date;
+    try {
+      label = new Date(date).toLocaleDateString("fr-FR", {
+        weekday: "long",
+        day: "numeric",
+        month: "long"
+      });
+    } catch (e) {}
+    return /*#__PURE__*/React.createElement("div", {
+      key: date
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 11,
+        fontWeight: 700,
+        letterSpacing: 1,
+        textTransform: "uppercase",
+        color: C.muted,
+        margin: "12px 0 8px"
+      }
+    }, label), ms.map(m => /*#__PURE__*/React.createElement(MatchCard, {
+      key: m.id,
+      m: m
+    })));
+  }));
+}
+function ClassementTab({
+  standings
+}) {
+  const letters = Object.keys(standings).sort();
+  const [sel, setSel] = useState(letters[0] || "A");
+  const table = standings[sel] || [];
+  if (!letters.length) return /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      padding: 40,
+      color: C.muted
+    }
+  }, "Chargement...");
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "Impact,sans-serif",
+      fontSize: 26,
+      letterSpacing: 2,
+      marginBottom: 4
+    }
+  }, "Classements"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8,
+      overflowX: "auto",
+      paddingBottom: 4,
+      marginBottom: 14
+    }
+  }, letters.map(g => /*#__PURE__*/React.createElement(Chip, {
+    key: g,
+    label: g,
+    active: sel === g,
+    onClick: () => setSel(g)
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: C.surface,
+      borderRadius: 14,
+      border: "1px solid rgba(255,255,255,0.07)",
+      overflow: "hidden",
+      marginBottom: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "22px 1fr 24px 24px 24px 24px 32px",
+      gap: 4,
+      padding: "8px 12px",
+      fontSize: 10,
+      fontWeight: 700,
+      color: C.muted,
+      textTransform: "uppercase",
+      background: C.surface2
+    }
+  }, /*#__PURE__*/React.createElement("div", null, "#"), /*#__PURE__*/React.createElement("div", null, "Équipe"), /*#__PURE__*/React.createElement("div", null, "J"), /*#__PURE__*/React.createElement("div", null, "V"), /*#__PURE__*/React.createElement("div", null, "D"), /*#__PURE__*/React.createElement("div", null, "+/-"), /*#__PURE__*/React.createElement("div", null, "Pts")), table.map((t, i) => {
+    const diff = t.gf - t.ga;
+    const bl = i < 2 ? C.green : i === 2 ? C.gold : "transparent";
+    return /*#__PURE__*/React.createElement("div", {
+      key: t.name,
+      style: {
+        display: "grid",
+        gridTemplateColumns: "22px 1fr 24px 24px 24px 24px 32px",
+        gap: 4,
+        padding: "9px 12px",
+        alignItems: "center",
+        fontSize: 12,
+        borderBottom: "1px solid rgba(255,255,255,0.04)",
+        borderLeft: `3px solid ${bl}`
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 11,
+        fontWeight: 700,
+        color: C.muted
+      }
+    }, t.pos), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: 7
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 16
+      }
+    }, t.flag), /*#__PURE__*/React.createElement("span", null, t.name)), /*#__PURE__*/React.createElement("div", {
+      style: {
+        textAlign: "center",
+        color: C.muted,
+        fontSize: 11
+      }
+    }, t.j), /*#__PURE__*/React.createElement("div", {
+      style: {
+        textAlign: "center",
+        color: C.green,
+        fontSize: 11
+      }
+    }, t.v), /*#__PURE__*/React.createElement("div", {
+      style: {
+        textAlign: "center",
+        color: C.red,
+        fontSize: 11
+      }
+    }, t.d), /*#__PURE__*/React.createElement("div", {
+      style: {
+        textAlign: "center",
+        color: C.muted,
+        fontSize: 11
+      }
+    }, diff > 0 ? `+${diff}` : diff), /*#__PURE__*/React.createElement("div", {
+      style: {
+        textAlign: "center",
+        fontWeight: 700,
+        color: C.gold
+      }
+    }, t.pts));
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 12,
+      fontSize: 11,
+      color: C.muted
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: C.green
+    }
+  }, "■"), " Qualifié direct", /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: C.gold,
+      marginLeft: 4
+    }
+  }, "■"), " Meilleur 3ème possible"));
+}
+function PronosTab({
+  matches
+}) {
+  const [pronos, setPronos] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("fifa26p") || "{}");
+    } catch (e) {
+      return {};
+    }
+  });
+  const upcoming = matches.filter(m => m.status === "UPCOMING").slice(0, 8);
+  const set = (id, k) => {
+    const next = {
+      ...pronos,
+      [id]: k
+    };
+    setPronos(next);
+    try {
+      localStorage.setItem("fifa26p", JSON.stringify(next));
+    } catch (e) {}
+  };
+  const btnStyle = (id, k) => {
+    const s = pronos[id] === k ? k : "";
+    return {
+      flex: 1,
+      padding: "9px 4px",
+      borderRadius: 10,
+      fontSize: 12,
+      fontWeight: 700,
+      cursor: "pointer",
+      textAlign: "center",
+      border: s === "1" ? `1.5px solid ${C.green}` : s === "n" ? `1.5px solid ${C.gold}` : s === "2" ? `1.5px solid ${C.red}` : "1.5px solid rgba(255,255,255,0.1)",
+      background: s === "1" ? "rgba(0,196,125,0.15)" : s === "n" ? "rgba(201,168,76,0.15)" : s === "2" ? "rgba(232,69,69,0.15)" : C.surface2,
+      color: s === "1" ? C.green : s === "n" ? C.gold : s === "2" ? C.red : C.muted
+    };
+  };
+  if (!matches.length) return /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      padding: 40,
+      color: C.muted
+    }
+  }, "Chargement...");
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "Impact,sans-serif",
+      fontSize: 26,
+      letterSpacing: 2,
+      marginBottom: 4
+    }
+  }, "Mes Pronostics"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: C.muted,
+      marginBottom: 16
+    }
+  }, "Pronostique les prochains matchs"), !upcoming.length && /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      padding: 30,
+      color: C.muted
+    }
+  }, "Aucun match à venir pour le moment"), upcoming.map(m => /*#__PURE__*/React.createElement("div", {
+    key: m.id,
+    style: {
+      background: C.surface,
+      borderRadius: 14,
+      border: "1px solid rgba(255,255,255,0.07)",
+      marginBottom: 10,
+      padding: 15
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: C.muted,
+      textAlign: "center",
+      marginBottom: 10,
+      fontWeight: 700
+    }
+  }, "Gr.", m.group, " · ", m.venue, " · ", m.time), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginBottom: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: 4,
+      width: "40%"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 32
+    }
+  }, m.f1), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      fontWeight: 600,
+      textAlign: "center"
+    }
+  }, m.t1)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      fontWeight: 700,
+      color: C.muted
+    }
+  }, "VS"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: 4,
+      width: "40%"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 32
+    }
+  }, m.f2), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      fontWeight: 600,
+      textAlign: "center"
+    }
+  }, m.t2))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8
+    }
+  }, [["1", m.t1], ["n", "Nul"], ["2", m.t2]].map(([k, label]) => /*#__PURE__*/React.createElement("div", {
+    key: k,
+    style: btnStyle(m.id, k),
+    onClick: () => set(m.id, k)
+  }, k.toUpperCase(), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 10
+    }
+  }, label)))))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: C.surface,
+      borderRadius: 14,
+      border: "1px solid rgba(255,255,255,0.07)",
+      marginTop: 12,
+      padding: 16,
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 28,
+      marginBottom: 8
+    }
+  }, "🏅"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700,
+      marginBottom: 8
+    }
+  }, "Pronos enregistrés"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "Impact,sans-serif",
+      fontSize: 40,
+      color: C.gold
+    }
+  }, Object.keys(pronos).length), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: C.muted
+    }
+  }, "sur ", upcoming.length, " matchs à venir")));
+}
+function StatsTab({
+  matches
+}) {
+  const played = matches.filter(m => m.status === "FINISHED");
+  const totGoals = played.reduce((acc, m) => acc + m.s1 + m.s2, 0);
+  const Block = ({
+    title,
+    rows
+  }) => /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: C.surface,
+      borderRadius: 14,
+      border: "1px solid rgba(255,255,255,0.07)",
+      marginBottom: 12,
+      overflow: "hidden"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "12px 14px",
+      borderBottom: "1px solid rgba(255,255,255,0.06)",
+      fontSize: 13,
+      fontWeight: 700
+    }
+  }, title), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "4px 14px 12px"
+    }
+  }, rows.map(([l, v]) => /*#__PURE__*/React.createElement("div", {
+    key: l,
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      padding: "9px 0",
+      borderBottom: "1px solid rgba(255,255,255,0.05)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: C.muted
+    }
+  }, l), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      fontWeight: 700,
+      color: C.gold
+    }
+  }, v)))));
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "Impact,sans-serif",
+      fontSize: 26,
+      letterSpacing: 2,
+      marginBottom: 4
+    }
+  }, "Chiffres Clés"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: C.muted,
+      marginBottom: 16
+    }
+  }, "Mis à jour automatiquement"), /*#__PURE__*/React.createElement(Block, {
+    title: "📊 Tournoi en cours",
+    rows: [["Matchs joués", `${played.length} / 104`], ["Buts marqués", `${totGoals}`], ["Moyenne par match", played.length ? (totGoals / played.length).toFixed(1) : "—"]]
+  }), /*#__PURE__*/React.createElement(Block, {
+    title: "🌍 Édition 2026",
+    rows: [["Équipes", "48"], ["Matchs au total", "104"], ["Stades", "16"], ["Pays hôtes", "3 🇺🇸🇨🇦🇲🇽"]]
+  }), /*#__PURE__*/React.createElement(Block, {
+    title: "🥇 Palmarès historique",
+    rows: [["🇧🇷 Brésil", "5 titres"], ["🇩🇪 Allemagne", "4 titres"], ["🇮🇹 Italie", "4 titres"], ["🇦🇷 Argentine", "3 titres"], ["🇫🇷 France", "2 titres"], ["🇪🇸 Espagne", "1 titre"]]
+  }));
+}
+function InfosTab() {
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "Impact,sans-serif",
+      fontSize: 26,
+      letterSpacing: 2,
+      marginBottom: 4
+    }
+  }, "Le Savais-Tu ?"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: C.muted,
+      marginBottom: 16
+    }
+  }, "Anecdotes & faits insolites"), FUN_FACTS.map((ff, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    style: {
+      background: C.surface,
+      borderRadius: 14,
+      border: "1px solid rgba(255,255,255,0.07)",
+      marginBottom: 10,
+      overflow: "hidden"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 10,
+      padding: "13px 15px",
+      background: `linear-gradient(90deg,#1C2030,${C.surface})`,
+      borderBottom: "1px solid rgba(255,255,255,0.06)"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 22
+    }
+  }, ff.icon), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 13,
+      fontWeight: 700
+    }
+  }, ff.title)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "13px 15px",
+      fontSize: 13,
+      lineHeight: 1.6,
+      color: "#C8CDD8"
+    }
+  }, ff.body, /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 8
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      background: "rgba(201,168,76,0.12)",
+      border: "1px solid rgba(201,168,76,0.25)",
+      borderRadius: 8,
+      padding: "3px 9px",
+      fontSize: 10,
+      fontWeight: 700,
+      color: C.gold,
+      letterSpacing: 1
+    }
+  }, ff.tag))))));
+}
+function App() {
+  const [tab, setTab] = useState("groupes");
+  const [matches, setMatches] = useState([]);
+  const [standings, setStandings] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [lastSync, setLastSync] = useState(null);
+  function loadData() {
+    setLoading(true);
+    setError(null);
+    fetch(DATA_URL).then(r => {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    }).then(data => {
+      const norm = (data.matches || []).map(normalizeMatch);
+      setMatches(norm);
+      setStandings(computeStandings(norm));
+      setLastSync(new Date());
+      setLoading(false);
+    }).catch(e => {
+      setError(e.message);
+      setLoading(false);
+    });
+  }
+  useEffect(() => {
+    loadData();
+  }, []);
+  const TABS = [["groupes", "🏆 Groupes"], ["matches", "⚽ Matchs"], ["classement", "📋 Classement"], ["pronos", "🎯 Pronos"], ["stats", "📊 Stats"], ["infos", "💡 Infos"]];
+  const playedCount = matches.filter(m => m.status === "FINISHED").length;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "Inter,sans-serif",
+      background: C.dark,
+      color: C.text,
+      minHeight: "100vh"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "linear-gradient(160deg,#0A0C10 0%,#1a1f35 50%,#0f1420 100%)",
+      padding: "50px 20px 24px",
+      textAlign: "center",
+      position: "relative",
+      overflow: "hidden"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "absolute",
+      top: -80,
+      left: "50%",
+      transform: "translateX(-50%)",
+      width: 400,
+      height: 400,
+      background: "radial-gradient(circle,rgba(201,168,76,0.15) 0%,transparent 70%)",
+      pointerEvents: "none"
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      fontWeight: 600,
+      letterSpacing: 2,
+      textTransform: "uppercase",
+      color: C.gold,
+      marginBottom: 12,
+      background: "rgba(201,168,76,0.15)",
+      border: "1px solid rgba(201,168,76,0.4)",
+      borderRadius: 20,
+      padding: "5px 14px",
+      display: "inline-block"
+    }
+  }, "⚽ FIFA World Cup 2026"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "Impact,sans-serif",
+      fontSize: "clamp(52px,14vw,88px)",
+      lineHeight: 0.9,
+      background: "linear-gradient(135deg,#fff 30%,#C9A84C 100%)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+      letterSpacing: 2
+    }
+  }, "FIFA", /*#__PURE__*/React.createElement("br", null), "2026"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      letterSpacing: 4,
+      textTransform: "uppercase",
+      color: C.muted,
+      marginTop: 8
+    }
+  }, "11 Juin – 19 Juillet · USA · Canada · Mexique"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      justifyContent: "center",
+      gap: 16,
+      margin: "10px 0",
+      fontSize: 26
+    }
+  }, "🇺🇸 🇨🇦 🇲🇽")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      padding: "8px 14px",
+      background: "#12151C",
+      borderBottom: "1px solid rgba(255,255,255,0.06)",
+      fontSize: 11,
+      color: C.muted
+    }
+  }, /*#__PURE__*/React.createElement("span", null, loading ? "Synchronisation..." : error ? "⚠️ Hors-ligne, données indisponibles" : `${playedCount} matchs joués · maj ${lastSync ? lastSync.toLocaleTimeString("fr-FR", {
+    hour: "2-digit",
+    minute: "2-digit"
+  }) : ""}`), /*#__PURE__*/React.createElement("div", {
+    onClick: loadData,
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 5,
+      background: "rgba(201,168,76,0.15)",
+      border: "1px solid rgba(201,168,76,0.3)",
+      borderRadius: 20,
+      padding: "4px 11px",
+      color: C.gold,
+      fontSize: 11,
+      fontWeight: 600,
+      cursor: "pointer"
+    }
+  }, loading ? "..." : "↻ Actualiser")), error && /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "12px 14px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "rgba(232,69,69,0.1)",
+      border: "1px solid rgba(232,69,69,0.3)",
+      borderRadius: 14,
+      padding: 16,
+      fontSize: 13,
+      color: "#ff8080",
+      textAlign: "center"
+    }
+  }, "Impossible de récupérer les derniers résultats. Vérifie ta connexion et appuie sur Actualiser.")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "sticky",
+      top: 0,
+      zIndex: 100,
+      background: "rgba(10,12,16,0.97)",
+      backdropFilter: "blur(20px)",
+      borderBottom: "1px solid rgba(255,255,255,0.06)",
+      display: "flex",
+      overflowX: "auto",
+      padding: "0 8px"
+    }
+  }, TABS.map(([k, l]) => /*#__PURE__*/React.createElement("button", {
+    key: k,
+    onClick: () => setTab(k),
+    style: {
+      flexShrink: 0,
+      padding: "13px 13px",
+      fontSize: 12,
+      fontWeight: 600,
+      color: tab === k ? C.gold : C.muted,
+      cursor: "pointer",
+      background: "none",
+      border: "none",
+      borderBottom: tab === k ? `2px solid ${C.gold}` : "2px solid transparent",
+      whiteSpace: "nowrap"
+    }
+  }, l))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "18px 14px"
+    }
+  }, tab === "groupes" && /*#__PURE__*/React.createElement(GroupesTab, {
+    standings: standings
+  }), tab === "matches" && /*#__PURE__*/React.createElement(MatchesTab, {
+    matches: matches
+  }), tab === "classement" && /*#__PURE__*/React.createElement(ClassementTab, {
+    standings: standings
+  }), tab === "pronos" && /*#__PURE__*/React.createElement(PronosTab, {
+    matches: matches
+  }), tab === "stats" && /*#__PURE__*/React.createElement(StatsTab, {
+    matches: matches
+  }), tab === "infos" && /*#__PURE__*/React.createElement(InfosTab, null), /*#__PURE__*/React.createElement("div", {
+    style: {
+      height: 30
+    }
+  })));
+}
+    var root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(React.createElement(App));
+  } catch(e) {
+    document.getElementById('root').innerHTML =
+      '<div style="color:#fff;padding:40px 20px;font-family:sans-serif;"><h2>Erreur au démarrage</h2><p style="color:#E84545;margin-top:10px">' + e.message + '</p></div>';
+  }
+}
+
+function waitForReact(attempts) {
+  if (typeof React !== 'undefined' && typeof ReactDOM !== 'undefined') {
+    startApp();
+  } else if (attempts > 0) {
+    setTimeout(function() { waitForReact(attempts - 1); }, 200);
+  } else {
+    document.getElementById('root').innerHTML =
+      '<div style="color:#fff;padding:40px 20px;font-family:sans-serif;text-align:center;"><h2>Connexion requise</h2><p style="color:#E84545;margin-top:10px">React n\'a pas pu se charger.</p></div>';
+  }
+}
+waitForReact(25);
+</script>
+</body>
+</html>
